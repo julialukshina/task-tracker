@@ -2,13 +2,13 @@ import java.util.Objects;
 public class Task { //класс задач
     private String name;
     private String description;
-    private String status;
+    private Status status;
     private int id;
 
     public Task(String name, String description) { //конструктор класса задач
         this.name = name;
         this.description = description;
-        status = "NEW";
+        status = status.NEW;
         id=0;
     }
 
@@ -28,11 +28,11 @@ public class Task { //класс задач
         this.description = description;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
@@ -40,25 +40,15 @@ public class Task { //класс задач
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    @Override //переопределение equals()
-    public boolean equals (Object obj){
-        if (this == obj) return true;
-        if(obj == null) return false;
-        if (this.getClass() != obj.getClass()) return false;
-        Task otherTask = (Task) obj;
-        return (Objects.equals(name, otherTask.name)&&
-                Objects.equals(description, otherTask.description)&&
-                id==otherTask.id);
-    }
+
 
     @Override //переопределение toString()
     public String toString(){
-        String result = " { name' = " + name + '\'' + ", description = '" + description
-                + '\'' + ". status = '" + status + '\'' + "id = '"+ id + '\'';
-        return result + '}';
+        return "{ name' = " + name + '\'' + ", description = '" + description
+                + '\'' + ". status = '" + status + '\'' + ", id = '"+ id + '}';
     }
 }
