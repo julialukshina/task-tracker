@@ -3,9 +3,6 @@ import java.util.ArrayList;
 
 public class Manager {
     private int id;
-    Task task;
-    SubTask subtask;
-    Epic epic;
     HashMap<Integer, Task> tasks = new HashMap<>();
     HashMap<Integer, SubTask> subtasks = new HashMap<>();
     HashMap<Integer, Epic> epics = new HashMap<>();
@@ -37,42 +34,56 @@ public class Manager {
         }
     }
 
-    public ArrayList getListOfTasks() { // возвращает список задач
-        ArrayList<Task> listOfTasks = new ArrayList(tasks.values());
-        return listOfTasks;
+    public ArrayList<Task> getListOfTasks() { // возвращает список задач
+        return new ArrayList<>(tasks.values());
     }
 
-    public ArrayList getListOfSubTasks() { // возвращает список подзадач
-        ArrayList<Task> listOfSubTasks = new ArrayList(subtasks.values());
-        return listOfSubTasks;
+    public ArrayList<SubTask> getListOfSubTasks() { // возвращает список подзадач
+        return new ArrayList<>(subtasks.values());
     }
 
-    public ArrayList getListOfEpics() { // // возвращает список эпиков
-        ArrayList<Task> listOfEpics = new ArrayList(epics.values());
-        return listOfEpics;
+    public ArrayList<Epic> getListOfEpics() { // // возвращает список эпиков
+        return new ArrayList<>(epics.values());
     }
 
-    public void deleteAllTasks(HashMap map) { // метод удаляет все задачи
-        map.clear();
+    public ArrayList<SubTask> getListOfSubtasksOfEpics(Epic epic) { // // возвращает список сабтасков эпика
+        return new ArrayList<>(epic.getSubTasksOfEpic());
     }
 
-    public Object getTaskByID(int id) { // метод возвращает объект по его id
+    public void deleteAllTasks(HashMap map) { // метод удаляет все задачи (для всех видов)
+        if (map == subtasks) {
+            ArrayList<Epic> epics = new ArrayList<>();
+            for (SubTask subTask : subtasks.values()) {
+                epics.add(subTask.getEpic());
+            }
+            map.clear();
+            for (Epic epic : epics) {
+                epic.deleteSubtasks();
+                epic.checkStatus();
+            }
+        } else {
+            map.clear();
+        }
+    }
+
+    public Object getTaskByID(int id) { // метод возвращает объект всех видов задач по его id
+        Task result = null;
         if (tasks.containsKey(id)) {
-            return tasks.get(id);
+            result = tasks.get(id);
         } else if (subtasks.containsKey(id)) {
-            return subtasks.get(id);
+            result = subtasks.get(id);
         } else if (epics.containsKey(id)) {
-            return epics.get(id);
+            result = epics.get(id);
         } else {
             System.out.print("Такой id отсутствует. ");
         }
-        return task;
+        return result;
     }
 
-    public void updateTask(Task task, int id) {
+    public void updateTask(Task task, int id) { //метод обновляет задачи всех видов
         if (task instanceof SubTask) {
             subtasks.put(id, (SubTask) task);
-            epic.checkStatus();
+            ((SubTask) task).getEpic().checkStatus();
         } else if (task instanceof Epic) {
             epics.put(id, (Epic) task);
         } else {
@@ -84,10 +95,11 @@ public class Manager {
         }
     }
 
-    public void deleteTaskById(int id) {
+    public void deleteTaskById(int id) { //метод удаляет задачу по id
         if (tasks.containsKey(id)) {
             tasks.remove(id);
         } else if (subtasks.containsKey(id)) {
+            Epic epic = subtasks.get(id).getEpic();
             subtasks.remove(id);
             epic.checkStatus();
         } else if (epics.containsKey(id)) {
@@ -96,5 +108,4 @@ public class Manager {
             System.out.print("Нельзя удалить то, чего нет");
         }
     }
-
 }

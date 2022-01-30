@@ -1,4 +1,3 @@
-import java.util.Objects;
 public class Task { //класс задач
     private String name;
     private String description;
@@ -44,11 +43,9 @@ public class Task { //класс задач
         this.id = id;
     }
 
-
-
     @Override //переопределение toString()
     public String toString(){
         return "{ name' = " + name + '\'' + ", description = '" + description
-                + '\'' + ". status = '" + status + '\'' + ", id = '"+ id + '}';
+                + '\'' + ". status = '" + status + '\'' + ", id = '"+ id + '\'' + '}';
     }
 }

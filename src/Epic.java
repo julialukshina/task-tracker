@@ -2,49 +2,56 @@ import java.util.ArrayList;
 
 public class Epic extends Task {
     private ArrayList<SubTask> subTasksOfEpic;
-    private Status status;
 
     public Epic(String name, String description) {
         super(name, description);
-                subTasksOfEpic = new ArrayList<>();
+        subTasksOfEpic = new ArrayList<>();
     }
 
-    public void addSubTask(SubTask subtask) {
+    public void addSubTask(SubTask subtask) { //метод записи сабтасков в лист эпика
         subTasksOfEpic.add(subtask);
     }
 
-    public void checkStatus() {
+    public ArrayList<SubTask> getSubTasksOfEpic() { //метод возвращает список подзадач определенного эпика
+        return subTasksOfEpic;
+    }
+
+    public void deleteSubtasks() { //метод удаления сабтасков из списка
+        subTasksOfEpic.clear();
+    }
+
+    public void checkStatus() { //метод проверки статуса для эпика
         if (subTasksOfEpic.size() == 0) {
-            status = Status.NEW;
+            super.setStatus(Status.NEW);
             return;
         }
         boolean isNew = true;
         boolean isDone = true;
-        for (SubTask subtask : subTasksOfEpic){
-                if (subtask.getStatus() != Status.NEW){
-                    isNew = false;
-                } else if (subtask.getStatus() != Status.DONE){
-                    isDone = false;
-                }
+        for (SubTask subtask : subTasksOfEpic) {
+            if (subtask.getStatus() != Status.NEW) {
+                isNew = false;
+            }
+            if (subtask.getStatus() != Status.DONE) {
+                isDone = false;
+            }
         }
         if (isNew) {
-            status = Status.NEW;
+            super.setStatus(Status.NEW);
         } else if (isDone) {
-            status = Status.DONE;
+            super.setStatus(Status.DONE);
         } else {
-            status = Status.IN_PROGRESS;
+            super.setStatus(Status.IN_PROGRESS);
         }
     }
 
-    @Override
+    @Override // переопределение метода setStatus(Status status) для эпиков
     public void setStatus(Status status) {
         System.out.println("Данный метод недоступен для этого задач класса Epic");
     }
 
-    @Override
+    @Override //переопределение toString()
     public String toString() {
-
-        return super.toString()  +
+        return super.toString() +
                 ", subTasksOfEpic=" + subTasksOfEpic +
                 '}';
     }
