@@ -5,7 +5,6 @@ public class SubTask extends Task { // класс подзадач наслед�
     public SubTask(String name, String description, Epic epic) { // конструктор класса подзадач
         super(name, description);
         this.epic = epic;
-        this.epic.addSubTask(this);
     }
 
     public Epic getEpic() {

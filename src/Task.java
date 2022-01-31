@@ -2,7 +2,7 @@ public class Task { //класс задач
     private String name;
     private String description;
     private Status status;
-    private int id;
+    private Integer id;
 
     public Task(String name, String description) { //конструктор класса задач
         this.name = name;
@@ -39,7 +39,7 @@ public class Task { //класс задач
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
