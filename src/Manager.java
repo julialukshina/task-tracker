@@ -16,8 +16,8 @@ public class Manager {
     }
 
     public Integer getNewId() { //выделила в отдельный метод по рекомендации
-        setId(getId() + 1);
-        return getId();
+        id++;
+        return id;
     }
 
     public void putTask(Task task) { // записывает соответсвующую задачу в нужную мапу
