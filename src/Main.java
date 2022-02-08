@@ -1,6 +1,6 @@
 public class Main {
     public static void main(String[] args) {
-        Manager manager = new Manager();
+        TaskManager manager = new InMemoryTaskManager();
 //далее создаются объекты: 2 задачи, эпик с двуся подзадачами, эпик с одной подзадачей
         Task task1 = new Task("Поход в кино", "Сибирский цирюльник");
         manager.putTask(task1);
@@ -29,15 +29,30 @@ public class Main {
         epic2.setStatus(Status.DONE);
         subTask3.setStatus(Status.IN_PROGRESS);
         manager.updateTask(task1, 1);
-        manager.updateTask(task1, 2);
+        manager.updateTask(task2, 2);
         manager.updateTask(epic1, 3);
         manager.updateTask(subTask1, 4);
         manager.updateTask(subTask2, 5);
         manager.updateTask(epic2, 6);
         manager.updateTask(subTask3, 7);
 //далее идет печать списков эпиков, задач и подзадач с учетом внесенныъх изменений
-        System.out.println("Список эпиков состоит из: " + manager.getListOfEpics());
-        System.out.println("Список задач состоит из: " + manager.getListOfTasks());
-        System.out.println("Список подзадач состоит из: " + manager.getListOfSubTasks());
+//        System.out.println("Список эпиков состоит из: " + manager.getListOfEpics());
+//        System.out.println("Список задач состоит из: " + manager.getListOfTasks());
+//        System.out.println("Список подзадач состоит из: " + manager.getListOfSubTasks());
+ //       manager.getTaskByID(1);
+        manager.getTaskByID(3);
+//        manager.getTaskByID(6);
+//        manager.getTaskByID(7);
+//        manager.getTaskByID(7);
+        manager.getTaskByID(1);
+        manager.getTaskByID(1);
+//        manager.getTaskByID(2);
+        manager.getTaskByID(4);
+//        manager.getTaskByID(1);
+//        manager.getTaskByID(5);
+        System.out.println("История задач состоит из: " + manager.getHistory());
+        manager.deleteTaskById(3);
+        System.out.println("История задач состоит из: " + manager.getHistory());
+
     }
 }
