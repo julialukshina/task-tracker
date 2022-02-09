@@ -6,6 +6,8 @@ import Tasks.*;
 
 public interface TaskManager {
 
+    HistoryManager getHistoryManager();
+
     Integer getNewId();
 
     void putTask(Task task);

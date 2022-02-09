@@ -4,8 +4,7 @@ import Tasks.Task;
 
 import java.util.ArrayList;
 
-public interface HistoryManager extends TaskManager {
-
+public interface HistoryManager {
     ArrayList<Task> getHistory();
 
     void add(Task task);

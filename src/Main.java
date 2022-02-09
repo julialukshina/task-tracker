@@ -3,7 +3,7 @@ import Tasks.*;
 
 public class Main {
     public static void main(String[] args) {
-        HistoryManager manager = Managers.getDefaultHistory();
+        TaskManager manager = Managers.GetDefault();
         //далее создаются объекты: 2 задачи, эпик с двуся подзадачами, эпик с одной подзадачей
         Task task1 = new Task("Поход в кино", "Сибирский цирюльник");
         manager.putTask(task1);
@@ -54,12 +54,12 @@ public class Main {
         manager.getTaskByID(4);
         manager.getTaskByID(1);
         manager.getTaskByID(5);
-        System.out.println("История задач состоит из: " + manager.getHistory());
+        System.out.println("История задач состоит из: " + manager.getHistoryManager().getHistory());
         manager.deleteTaskById(3);
-        System.out.println("История задач состоит из: " + manager.getHistory());
+        System.out.println("История задач состоит из: " + manager.getHistoryManager().getHistory());
         manager.deleteAllSubtasks();
-        System.out.println("История задач состоит из: " + manager.getHistory());
+        System.out.println("История задач состоит из: " + manager.getHistoryManager().getHistory());
         manager.deleteTaskById(1);
-        System.out.println("История задач состоит из: " + manager.getHistory());
+        System.out.println("История задач состоит из: " + manager.getHistoryManager().getHistory());
     }
 }
