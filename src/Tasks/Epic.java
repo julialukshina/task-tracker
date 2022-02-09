@@ -1,3 +1,5 @@
+package Tasks;
+
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -45,9 +47,9 @@ public class Epic extends Task {
         }
     }
 
-    @Override // переопределение метода setStatus(Status status) для эпиков
+    @Override // переопределение метода setStatus(Tasks.Status status) для эпиков
     public void setStatus(Status status) {
-        System.out.println("Данный метод недоступен для этого задач класса Epic");
+        System.out.println("Данный метод недоступен для этого задач класса Tasks.Epic");
     }
 
     @Override //переопределение toString()

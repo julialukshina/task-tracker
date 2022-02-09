@@ -1,7 +1,10 @@
+import Managers.*;
+import Tasks.*;
+
 public class Main {
     public static void main(String[] args) {
-        TaskManager manager = new InMemoryTaskManager();
-//далее создаются объекты: 2 задачи, эпик с двуся подзадачами, эпик с одной подзадачей
+        HistoryManager manager = Managers.getDefaultHistory();
+        //далее создаются объекты: 2 задачи, эпик с двуся подзадачами, эпик с одной подзадачей
         Task task1 = new Task("Поход в кино", "Сибирский цирюльник");
         manager.putTask(task1);
         Task task2 = new Task("Купить подарок брату", "Скрин подарка в ВК");
@@ -36,6 +39,7 @@ public class Main {
         manager.updateTask(epic2, 6);
         manager.updateTask(subTask3, 7);
 //далее идет печать списков эпиков, задач и подзадач с учетом внесенныъх изменений
+
         System.out.println("Список эпиков состоит из: " + manager.getListOfEpics());
         System.out.println("Список задач состоит из: " + manager.getListOfTasks());
         System.out.println("Список подзадач состоит из: " + manager.getListOfSubTasks());

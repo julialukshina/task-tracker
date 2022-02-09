@@ -1,3 +1,5 @@
+package Tasks;
+
 import java.util.Objects;
 
 public class SubTask extends Task { // класс подзадач наследует класс задач

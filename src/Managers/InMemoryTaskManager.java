@@ -1,44 +1,40 @@
-import java.util.HashMap;
+package Managers;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashMap;
 
-public class InMemoryTaskManager implements TaskManager {
+import Tasks.*;
+
+public class InMemoryTaskManager implements TaskManager, HistoryManager {
     private Integer id = 0;
     HashMap<Integer, Task> tasks = new HashMap<>();
     HashMap<Integer, SubTask> subtasks = new HashMap<>();
     HashMap<Integer, Epic> epics = new HashMap<>();
-    List <Task> history = new ArrayList<>();
+    List<Task> history = new ArrayList<>();
 
-
-    private void putTaskInHistory(Task task){ //в целях устранения дублирования кода в отдельный метод вынесла заполнение списка истории задач
-        if (history.size()<10){
+    @Override
+    public void add(Task task) { //в целях устранения дублирования кода в отдельный метод вынесла заполнение списка истории задач
+        if (history.size() < 10) {
             history.add(task);
-        }else{
+        } else {
             history.remove(0);
             history.add(task);
         }
     }
 
-    private void deleteTaskFromHistory(Task task){ //в целях устранения дублирования кода в отдельный метод вынесла удаление из списка истории задач
-               if (history.contains(task)){
-                   history.removeIf(task1 -> task1.equals(task));
-       }
+    @Override
+    public void deleteTaskFromHistory(Task task) { //в целях устранения дублирования кода в отдельный метод вынесла удаление из списка истории задач
+        if (history.contains(task)) {
+            history.removeIf(task1 -> task1.equals(task));
+        }
     }
 
     @Override
-    public ArrayList<Task> getHistory(){ //метод возвращает список историй задач
+    public ArrayList<Task> getHistory() { //метод возвращает список историй задач
         return (ArrayList<Task>) history;
     }
 
-    @Override
-    public Integer getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     @Override
     public Integer getNewId() { //выделила в отдельный метод по рекомендации
@@ -85,7 +81,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void deleteAllTasks() {
         for (Task task : tasks.values()) {
-             deleteTaskFromHistory(task);
+            deleteTaskFromHistory(task);
         }// разделила на три отдельных метода, каждый из которых удаляет свой тип задач
         tasks.clear();
     } //предусмотрела удаление всех задач для каждого типа задач
@@ -121,13 +117,13 @@ public class InMemoryTaskManager implements TaskManager {
         Task result = null;
         if (tasks.containsKey(id)) {
             result = tasks.get(id);
-            putTaskInHistory(result);
+            add(result);
         } else if (subtasks.containsKey(id)) {
             result = subtasks.get(id);
-            putTaskInHistory(result);
+            add(result);
         } else if (epics.containsKey(id)) {
             result = epics.get(id);
-            putTaskInHistory(result);
+            add(result);
         } else {
             System.out.print("Такой id отсутствует. ");
         }
@@ -137,23 +133,23 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void updateTask(Task task, Integer id) { //метод обновляет задачи всех видов
         if (task instanceof SubTask) {
-            if (task.getId()==id){
-            subtasks.put(id, (SubTask) task);
-            ((SubTask) task).getEpic().checkStatus();
-            }else{
+            if (task.getId() == id) {
+                subtasks.put(id, (SubTask) task);
+                ((SubTask) task).getEpic().checkStatus();
+            } else {
                 System.out.println("Вы пытаетесь записать подзадачу под другим id");
             }
         } else if (task instanceof Epic) {
-            if (task.getId()==id){
+            if (task.getId() == id) {
                 epics.put(id, (Epic) task);
-            }else{
+            } else {
                 System.out.println("Вы пытаетесь записать эпик под другим id");
             }
         } else {
             if (tasks.get(id) != null) {
-                if (task.getId()==id){
+                if (task.getId() == id) {
                     tasks.put(id, task);
-                }else{
+                } else {
                     System.out.println("Вы пытаетесь записать задачу под другим id");
                 }
             } else {
@@ -164,19 +160,19 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void deleteTaskById(Integer id) { //метод удаляет задачу по id
-            if (tasks.containsKey(id)) {
-                deleteTaskFromHistory(tasks.get(id));
+        if (tasks.containsKey(id)) {
+            deleteTaskFromHistory(tasks.get(id));
             tasks.remove(id);
         } else if (subtasks.containsKey(id)) {
             Epic epic = subtasks.get(id).getEpic();
-            SubTask subTask= subtasks.get(id);
+            SubTask subTask = subtasks.get(id);
             subtasks.remove(id);
             deleteTaskFromHistory(subTask);
             epic.getSubTasksOfEpic().remove(subTask);
             epic.checkStatus();
         } else if (epics.containsKey(id)) {
-                ArrayList<SubTask> subTasks = epics.get(id).getSubTasksOfEpic();
-                deleteTaskFromHistory(epics.get(id));
+            ArrayList<SubTask> subTasks = epics.get(id).getSubTasksOfEpic();
+            deleteTaskFromHistory(epics.get(id));
             epics.remove(id);
             for (SubTask subTask : subTasks) {
                 deleteTaskFromHistory(subTask);

@@ -1,3 +1,5 @@
+package Tasks;
+
 import java.util.Objects;
 
 public class Task { //класс задач
@@ -10,7 +12,7 @@ public class Task { //класс задач
         this.name = name;
         this.description = description;
         status = status.NEW;
-        id=0;
+        id = 0;
     }
 
     public String getName() {
@@ -46,9 +48,9 @@ public class Task { //класс задач
     }
 
     @Override //переопределение toString()
-    public String toString(){
+    public String toString() {
         return "{ name' = " + name + '\'' + ", description = '" + description
-                + '\'' + ". status = '" + status + '\'' + ", id = '"+ id + '\'' + '}';
+                + '\'' + ". status = '" + status + '\'' + ", id = '" + id + '\'' + '}';
     }
 
     @Override
