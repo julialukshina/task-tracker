@@ -54,12 +54,12 @@ public class Main {
         manager.getTaskByID(4);
         manager.getTaskByID(1);
         manager.getTaskByID(5);
-        System.out.println("История задач состоит из: " + manager.getHistoryManager().getHistory());
+        System.out.println("История задач состоит из: " + manager.history());
         manager.deleteTaskById(3);
-        System.out.println("История задач состоит из: " + manager.getHistoryManager().getHistory());
+        System.out.println("История задач состоит из: " + manager.history());
         manager.deleteAllSubtasks();
-        System.out.println("История задач состоит из: " + manager.getHistoryManager().getHistory());
+        System.out.println("История задач состоит из: " + manager.history());
         manager.deleteTaskById(1);
-        System.out.println("История задач состоит из: " + manager.getHistoryManager().getHistory());
+        System.out.println("История задач состоит из: " + manager.history());
     }
 }

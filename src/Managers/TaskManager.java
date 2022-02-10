@@ -6,7 +6,7 @@ import Tasks.*;
 
 public interface TaskManager {
 
-    HistoryManager getHistoryManager();
+    ArrayList<Task> history();
 
     Integer getNewId();
 
