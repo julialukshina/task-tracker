@@ -62,7 +62,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void deleteAllTasks() {
         for (Task task : tasks.values()) {
-            historyManager.deleteTaskFromHistory(task);
+            historyManager.remove(task);
         }// разделила на три отдельных метода, каждый из которых удаляет свой тип задач
         tasks.clear();
     } //предусмотрела удаление всех задач для каждого типа задач
@@ -72,7 +72,7 @@ public class InMemoryTaskManager implements TaskManager {
         ArrayList<Epic> epics = new ArrayList<>();
         for (SubTask subTask : subtasks.values()) {
             epics.add(subTask.getEpic());
-            historyManager.deleteTaskFromHistory(subTask);
+            historyManager.remove(subTask);
         }
         subtasks.clear();
         for (Epic epic : epics) {
@@ -84,10 +84,10 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void deleteAllEpics() {
         for (Epic epic : epics.values()) {
-            historyManager.deleteTaskFromHistory(epic);
+            historyManager.remove(epic);
         }
         for (SubTask subTask : subtasks.values()) {
-            historyManager.deleteTaskFromHistory(subTask);
+            historyManager.remove(subTask);
         }
         subtasks.clear();
         epics.clear();
@@ -142,21 +142,22 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void deleteTaskById(Integer id) { //метод удаляет задачу по id
         if (tasks.containsKey(id)) {
-            historyManager.deleteTaskFromHistory(tasks.get(id));
+            historyManager.remove(tasks.get(id));
             tasks.remove(id);
         } else if (subtasks.containsKey(id)) {
             Epic epic = subtasks.get(id).getEpic();
             SubTask subTask = subtasks.get(id);
             subtasks.remove(id);
-            historyManager.deleteTaskFromHistory(subTask);
+            historyManager.remove(subTask);
             epic.getSubTasksOfEpic().remove(subTask);
             epic.checkStatus();
         } else if (epics.containsKey(id)) {
             ArrayList<SubTask> subTasks = epics.get(id).getSubTasksOfEpic();
-            historyManager.deleteTaskFromHistory(epics.get(id));
+            historyManager.remove(epics.get(id));
             epics.remove(id);
             for (SubTask subTask : subTasks) {
-                historyManager.deleteTaskFromHistory(subTask);
+                subtasks.remove(subTask.getId());
+                historyManager.remove(subTask);
             }
         } else {
             System.out.print("Нельзя удалить то, чего нет");
