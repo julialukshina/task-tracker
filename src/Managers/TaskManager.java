@@ -1,12 +1,13 @@
 package Managers;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import Tasks.*;
 
 public interface TaskManager {
 
-    ArrayList<Task> history();
+    List<Task> history();
 
     Integer getNewId();
 
