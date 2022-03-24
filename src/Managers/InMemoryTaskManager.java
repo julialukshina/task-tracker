@@ -1,10 +1,12 @@
 package Managers;
 
+import Tasks.Epic;
+import Tasks.SubTask;
+import Tasks.Task;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import Tasks.*;
 
 public class InMemoryTaskManager implements TaskManager {
     private Integer id = 0;
@@ -29,8 +31,8 @@ public class InMemoryTaskManager implements TaskManager {
         if (task instanceof SubTask) {
             task.setId(getNewId());
             subtasks.put(task.getId(), (SubTask) task);
-            ((SubTask) task).getEpic().addSubTask((SubTask) task); //сабтаск записывается в список эпика
-            ((SubTask) task).getEpic().checkStatus(); // дополнила проверкой статуса эпика
+            epics.get(((SubTask) task).getEpic()).addSubTask((SubTask) task); //сабтаск записывается в список эпика
+            epics.get(((SubTask) task).getEpic()).checkStatus(); // дополнила проверкой статуса эпика
         } else if (task instanceof Epic) {
             task.setId(getNewId());
             epics.put(task.getId(), (Epic) task);
@@ -70,15 +72,15 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void deleteAllSubtasks() {
-        ArrayList<Epic> epics = new ArrayList<>();
+        ArrayList<Integer> epics1 = new ArrayList<>();
         for (SubTask subTask : subtasks.values()) {
-            epics.add(subTask.getEpic());
+            epics1.add(subTask.getEpic());
             historyManager.remove(subTask);
         }
         subtasks.clear();
-        for (Epic epic : epics) {
-            epic.deleteSubtasks();
-            epic.checkStatus();
+        for (Integer epic : epics1) {
+            epics.get(epic).deleteSubtasks();
+            epics.get(epic).checkStatus();
         }
     }
 
@@ -117,7 +119,7 @@ public class InMemoryTaskManager implements TaskManager {
         if (task instanceof SubTask) {
             if (task.getId() == id) {
                 subtasks.put(id, (SubTask) task);
-                ((SubTask) task).getEpic().checkStatus();
+                epics.get(((SubTask) task).getEpic()).checkStatus();
             } else {
                 System.out.println("Вы пытаетесь записать подзадачу под другим id");
             }
@@ -146,7 +148,7 @@ public class InMemoryTaskManager implements TaskManager {
             historyManager.remove(tasks.get(id));
             tasks.remove(id);
         } else if (subtasks.containsKey(id)) {
-            Epic epic = subtasks.get(id).getEpic();
+            Epic epic = epics.get(subtasks.get(id).getEpic());
             SubTask subTask = subtasks.get(id);
             subtasks.remove(id);
             historyManager.remove(subTask);

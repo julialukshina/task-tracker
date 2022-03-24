@@ -1,9 +1,12 @@
-import Managers.*;
+import Managers.Managers;
+import Managers.TaskManager;
 import Tasks.*;
 
 public class Main {
     public static void main(String[] args) {
+
         TaskManager manager = Managers.GetDefault();
+
         //далее создаются объекты: 2 задачи, эпик с тремя подзадачами, эпик без задач
         Task task1 = new Task("Поход в кино", "Сибирский цирюльник");
         manager.putTask(task1);
@@ -11,11 +14,11 @@ public class Main {
         manager.putTask(task2);
         Task epic1 = new Epic("Ремонт", "квартира в центре");
         manager.putTask(epic1);
-        Task subTask1 = new SubTask("Дизайнер", "Не позднее марта", (Epic) epic1);
+        Task subTask1 = new SubTask("Дизайнер", "Не позднее марта", 3);
         manager.putTask(subTask1);
-        Task subTask2 = new SubTask("Бригада", "Не позднее апреля", (Epic) epic1);
+        Task subTask2 = new SubTask("Бригада", "Не позднее апреля", 3);
         manager.putTask(subTask2);
-        Task subTask3 = new SubTask("Согласование проекта", "Не позднее конца марта", (Epic) epic1);
+        Task subTask3 = new SubTask("Согласование проекта", "Не позднее конца марта", 3);
         manager.putTask(subTask3);
         Task epic2 = new Epic("Поход к врачу", "до 15 февраля");
         manager.putTask(epic2);
@@ -34,7 +37,6 @@ public class Main {
         System.out.println("История задач состоит из: " + manager.history());
         manager.deleteTaskById(2);
         System.out.println("История задач состоит из: " + manager.history());
-        manager.deleteTaskById(3);
-        System.out.println("История задач состоит из: " + manager.history());
+
     }
 }

@@ -49,8 +49,7 @@ public class Task { //класс задач
 
     @Override //переопределение toString()
     public String toString() {
-        return "{ name' = " + name + '\'' + ", description = '" + description
-                + '\'' + ". status = '" + status + '\'' + ", id = '" + id + '\'' + '}';
+        return id + "," + TypeOfTasks.TASK + "," + name + "," + status + "," + description;
     }
 
     @Override

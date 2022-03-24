@@ -3,14 +3,14 @@ package Tasks;
 import java.util.Objects;
 
 public class SubTask extends Task { // класс подзадач наследует класс задач
-    private Epic epic;
+    private final int epic;
 
-    public SubTask(String name, String description, Epic epic) { // конструктор класса подзадач
+    public SubTask(String name, String description, int epic) { // конструктор класса подзадач
         super(name, description);
         this.epic = epic;
     }
 
-    public Epic getEpic() {
+    public int getEpic() {
         return epic;
     }
 
@@ -21,6 +21,11 @@ public class SubTask extends Task { // класс подзадач наслед�
         if (!super.equals(o)) return false;
         SubTask subTask = (SubTask) o;
         return Objects.equals(epic, subTask.epic);
+    }
+
+    @Override
+    public String toString() {
+        return getId() + "," + TypeOfTasks.SUBTASK + "," + getName() + "," + getStatus() + "," + getDescription() + "," + getEpic();
     }
 
     @Override

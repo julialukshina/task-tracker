@@ -1,11 +1,12 @@
 package Managers;
 
+import Tasks.Node;
+import Tasks.Task;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
-
-import Tasks.*;
 
 public class InMemoryHistoryManager implements HistoryManager { //класс, работающий с историей задач
     LinkedList history = new LinkedList();
@@ -61,7 +62,7 @@ public class InMemoryHistoryManager implements HistoryManager { //класс, р
             List<Task> tasks = new ArrayList<>();
             Node head = taskList.headNode;
             if (head == null) {
-                System.out.println("История задач пуста");
+               // System.out.println("История задач пуста");
             } else if (head.nextNode == head) {
                 tasks.add(head.task);
             } else {
