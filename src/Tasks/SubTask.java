@@ -1,5 +1,7 @@
 package Tasks;
 
+import java.time.Duration;
+import java.time.ZonedDateTime;
 import java.util.Objects;
 
 public class SubTask extends Task { // класс подзадач наследует класс задач
@@ -7,6 +9,11 @@ public class SubTask extends Task { // класс подзадач наслед�
 
     public SubTask(String name, String description, int epic) { // конструктор класса подзадач
         super(name, description);
+        this.epic = epic;
+    }
+
+    public SubTask(String name, String description, int epic, Duration duration, ZonedDateTime startTime) {
+        super(name, description, duration, startTime);
         this.epic = epic;
     }
 
@@ -25,7 +32,8 @@ public class SubTask extends Task { // класс подзадач наслед�
 
     @Override
     public String toString() {
-        return getId() + "," + TypeOfTasks.SUBTASK + "," + getName() + "," + getStatus() + "," + getDescription() + "," + getEpic();
+        return getId() + "," + TypeOfTasks.SUBTASK + "," + getName() + "," + getStatus() + "," + getDescription() + "," + getEpic()
+                + "," + getStartTime() + "," + getDuration();
     }
 
     @Override

@@ -4,6 +4,8 @@ import Exсeptions.ManagerSaveException;
 import Tasks.*;
 
 import java.io.*;
+import java.time.Duration;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +23,16 @@ public class FileBackedTasksManager extends InMemoryTaskManager { // созда�
             Task task = new Task(taskElements[2], taskElements[4]);
             task.setId(Integer.parseInt(taskElements[0]));
             task.setStatus(statusFromString(taskElements[3]));
+            if (taskElements[5].equals("null")) {
+                task.setStartTime(null);
+            } else {
+                task.setStartTime(ZonedDateTime.parse(taskElements[5]));
+            }
+            if (taskElements[6].equals("null")) {
+                task.setDuration(null);
+            } else {
+                task.setDuration(Duration.parse(taskElements[6]));
+            }
             return task;
         } else if (taskElements[1].equals(TypeOfTasks.EPIC.toString())) {
             Task epic = new Epic(taskElements[2], taskElements[4]);
@@ -31,6 +43,16 @@ public class FileBackedTasksManager extends InMemoryTaskManager { // созда�
             Task subtask = new SubTask(taskElements[2], taskElements[4], Integer.parseInt(taskElements[5]));
             subtask.setId(Integer.parseInt(taskElements[0]));
             subtask.setStatus(statusFromString(taskElements[3]));
+            if (taskElements[6].equals("null")) {
+                subtask.setStartTime(null);
+            } else {
+                subtask.setStartTime(ZonedDateTime.parse(taskElements[6]));
+            }
+            if (taskElements[7].equals("null")) {
+                subtask.setDuration(null);
+            } else {
+                subtask.setDuration(Duration.parse(taskElements[7]));
+            }
             return subtask;
         }
     }
@@ -69,7 +91,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager { // созда�
         }
     }
 
-    private void save() { // метод сохранения данных в файл
+    public void save() { // метод сохранения данных в файл
         List<Task> allTasks = new ArrayList<>();
         allTasks.addAll(getListOfTasks());
         allTasks.addAll(getListOfEpics());
@@ -148,42 +170,5 @@ public class FileBackedTasksManager extends InMemoryTaskManager { // созда�
     public void deleteTaskById(Integer id) {
         super.deleteTaskById(id);
         save();
-    }
-
-    public static void main(String[] args) { // main для проверки нового менеджера FileBackedTasksManager
-        File file = new File("src/file.csv");
-        TaskManager manager = new FileBackedTasksManager(file);
-
-        Task task1 = new Task("Поход в кино", "Сибирский цирюльник");
-        manager.putTask(task1);
-        Task task2 = new Task("Купить подарок брату", "Скрин подарка в ВК");
-        manager.putTask(task2);
-        Task epic1 = new Epic("Ремонт", "квартира в центре");
-        manager.putTask(epic1);
-        Task subTask1 = new SubTask("Дизайнер", "Не позднее марта", 3);
-        manager.putTask(subTask1);
-        Task subTask2 = new SubTask("Бригада", "Не позднее апреля", 3);
-        manager.putTask(subTask2);
-        Task subTask3 = new SubTask("Согласование проекта", "Не позднее конца марта", 3);
-        manager.putTask(subTask3);
-        Task epic2 = new Epic("Поход к врачу", "до 15 февраля");
-        manager.putTask(epic2);
-
-        manager.getTaskByID(1); //вызываем задачи через getTaskByID, чтобы они отобразились в истории задач
-        manager.getTaskByID(3);
-        manager.getTaskByID(6);
-        manager.getTaskByID(7);
-        manager.getTaskByID(7);
-        manager.getTaskByID(1);
-        manager.getTaskByID(1);
-        manager.getTaskByID(2);
-        manager.getTaskByID(4);
-        manager.getTaskByID(1);
-        manager.getTaskByID(5);
-        System.out.println("История задач состоит из: " + manager.history());
-        manager.deleteTaskById(2);
-        System.out.println("История задач состоит из: " + manager.history());
-
-        TaskManager manager1 = FileBackedTasksManager.loadFromFile(file);
     }
 }

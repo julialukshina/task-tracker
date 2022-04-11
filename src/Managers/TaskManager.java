@@ -32,5 +32,7 @@ public interface TaskManager {
     void updateTask(Task task, Integer id);
 
     void deleteTaskById(Integer id);
+
+    boolean canSaveTask(Task task);
 }
 

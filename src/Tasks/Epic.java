@@ -1,5 +1,7 @@
 package Tasks;
 
+import java.time.Duration;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -9,6 +11,27 @@ public class Epic extends Task {
     public Epic(String name, String description) {
         super(name, description);
         subTasksOfEpic = new ArrayList<>();
+    }
+
+    @Override
+    public Duration getDuration() {
+        if (!getSubTasksOfEpic().isEmpty()) {
+            ZonedDateTime minStartTime = subTasksOfEpic.get(0).getStartTime();
+            ZonedDateTime maxEndTime = subTasksOfEpic.get(0).getEndTime();
+            for (SubTask subtask : subTasksOfEpic) {
+                if (minStartTime.isAfter(subtask.getStartTime())) {
+                    minStartTime = subtask.getStartTime();
+                }
+                if (maxEndTime.isBefore(subtask.getEndTime())) {
+                    maxEndTime = subtask.getEndTime();
+                }
+            }
+            setStartTime(minStartTime);
+            setEndTime(maxEndTime);
+            setDuration(Duration.between(minStartTime, maxEndTime));
+            return Duration.between(minStartTime, maxEndTime);
+        }
+        return Duration.ZERO;
     }
 
     public void addSubTask(SubTask subtask) { //метод записи сабтасков в лист эпика
@@ -49,12 +72,12 @@ public class Epic extends Task {
 
     @Override // переопределение метода setStatus(Tasks.Status status) для эпиков
     public void setStatus(Status status) {
-        System.out.println("Данный метод недоступен для этого задач класса Tasks.Epic");
+        System.out.println("Данный метод недоступен для задач этого класса Tasks.Epic");
     }
 
     @Override //переопределение toString()
     public String toString() {
-        return getId() + "," + TypeOfTasks.EPIC + "," + getName() + "," + getStatus() + "," + getDescription();
+        return getId() + "," + TypeOfTasks.EPIC + "," + getName() + "," + getStatus() + "," + getDescription() + "," + getStartTime() + "," + super.getDuration();
     }
 
     @Override

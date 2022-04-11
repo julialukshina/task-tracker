@@ -1,5 +1,7 @@
 package Tasks;
 
+import java.time.Duration;
+import java.time.ZonedDateTime;
 import java.util.Objects;
 
 public class Task { //класс задач
@@ -7,12 +9,49 @@ public class Task { //класс задач
     private String description;
     private Status status;
     private Integer id;
+    private Duration duration;
+    private ZonedDateTime startTime;
+    private ZonedDateTime endTime;
 
     public Task(String name, String description) { //конструктор класса задач
         this.name = name;
         this.description = description;
         status = status.NEW;
         id = 0;
+    }
+
+    public Task(String name, String description, Duration duration, ZonedDateTime startTime) {
+        this.name = name;
+        this.description = description;
+        this.duration = duration;
+        this.startTime = startTime;
+        status = status.NEW;
+        id = 0;
+        endTime = getEndTime();
+    }
+
+    public ZonedDateTime getEndTime(){
+        return startTime.plusMinutes(duration.toMinutes());
+    }
+
+    public Duration getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Duration duration) {
+        this.duration = duration;
+    }
+
+    public ZonedDateTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(ZonedDateTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public void setEndTime(ZonedDateTime endTime) {
+        this.endTime = endTime;
     }
 
     public String getName() {
@@ -49,7 +88,8 @@ public class Task { //класс задач
 
     @Override //переопределение toString()
     public String toString() {
-        return id + "," + TypeOfTasks.TASK + "," + name + "," + status + "," + description;
+        return id + "," + TypeOfTasks.TASK + "," + name + "," + status + "," + description + "," + startTime + ","
+                + duration;
     }
 
     @Override
