@@ -122,7 +122,7 @@ public class Epic extends Task {
 
     @Override //переопределение toString()
     public String toString() {
-        return getId() + "," + TypeOfTasks.EPIC + "," + getName() + "," + getStatus() + "," + super.getDescription() + "," + super.getStartTime() + "," + super.getDuration();
+        return getId() + "," + TypeOfTasks.EPIC + "," + getName() + "," + getStatus() + "," + super.getDescription() + "," + startTime + "," + duration;
     }
 
     @Override

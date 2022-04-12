@@ -34,6 +34,7 @@ manager.putTask(epic1);
         System.out.println(epic1.getStartTime());
         System.out.println(epic1.getEndTime());
         System.out.println(epic1.getDuration());
+        System.out.println(epic1);
 //        try{
 //            Task task3 = new Task("Купить подарок брату", "Скрин подарка", duration, now);
 //            manager.putTask(task3);
