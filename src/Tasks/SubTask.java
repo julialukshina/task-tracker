@@ -1,5 +1,7 @@
 package Tasks;
 
+import Enams.TypeOfTasks;
+
 import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.util.Objects;
@@ -32,8 +34,8 @@ public class SubTask extends Task { // класс подзадач наслед�
 
     @Override
     public String toString() {
-        return getId() + "," + TypeOfTasks.SUBTASK + "," + getName() + "," + getStatus() + "," + getDescription() + "," + getEpic()
-                + "," + getStartTime() + "," + getDuration();
+        return getId() + "," + TypeOfTasks.SUBTASK + "," + getName() + "," + getStatus() + "," + getDescription()
+                + "," + getStartTime() + "," + getDuration() + "," + getEpic();
     }
 
     @Override

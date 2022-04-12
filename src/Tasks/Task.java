@@ -1,5 +1,7 @@
 package Tasks;
 
+import Enams.*;
+
 import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.util.Objects;
@@ -9,9 +11,9 @@ public class Task { //класс задач
     private String description;
     private Status status;
     private Integer id;
-    private Duration duration;
-    private ZonedDateTime startTime;
-    private ZonedDateTime endTime;
+    protected   Duration duration;
+    protected ZonedDateTime startTime;
+    protected ZonedDateTime endTime;
 
     public Task(String name, String description) { //конструктор класса задач
         this.name = name;
@@ -30,8 +32,13 @@ public class Task { //класс задач
         endTime = getEndTime();
     }
 
-    public ZonedDateTime getEndTime(){
-        return startTime.plusMinutes(duration.toMinutes());
+    public ZonedDateTime getEndTime() {
+        if (startTime != null && duration != null) {
+            endTime =  startTime.plusMinutes(duration.toMinutes());
+        }else {
+            endTime=null;
+        }
+        return endTime;
     }
 
     public Duration getDuration() {

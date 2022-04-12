@@ -1,5 +1,6 @@
 package Managers;
 
+import Enams.*;
 import Exсeptions.ManagerSaveException;
 import Tasks.*;
 
@@ -40,18 +41,18 @@ public class FileBackedTasksManager extends InMemoryTaskManager { // созда�
             epic.setStatus(statusFromString(taskElements[3]));
             return epic;
         } else {
-            Task subtask = new SubTask(taskElements[2], taskElements[4], Integer.parseInt(taskElements[5]));
+            Task subtask = new SubTask(taskElements[2], taskElements[4], Integer.parseInt(taskElements[7]));
             subtask.setId(Integer.parseInt(taskElements[0]));
             subtask.setStatus(statusFromString(taskElements[3]));
-            if (taskElements[6].equals("null")) {
+            if (taskElements[5].equals("null")) {
                 subtask.setStartTime(null);
             } else {
-                subtask.setStartTime(ZonedDateTime.parse(taskElements[6]));
+                subtask.setStartTime(ZonedDateTime.parse(taskElements[5]));
             }
-            if (taskElements[7].equals("null")) {
+            if (taskElements[6].equals("null")) {
                 subtask.setDuration(null);
             } else {
-                subtask.setDuration(Duration.parse(taskElements[7]));
+                subtask.setDuration(Duration.parse(taskElements[6]));
             }
             return subtask;
         }
@@ -98,7 +99,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager { // созда�
         allTasks.addAll(getListOfSubTasks());
         try (FileWriter writer = new FileWriter(file);) {
             BufferedWriter bufferWriter = new BufferedWriter(writer);
-            bufferWriter.write("id,type,name,status,description,epic" + "\n");
+            bufferWriter.write("id,type,name,status,description,startTime,duration,epic" + "\n"); //добавлены поля по времени, скорректирован порядок
             for (Task task : allTasks) {
                 bufferWriter.write(task.toString() + "\n");
             }

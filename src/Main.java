@@ -12,22 +12,36 @@ public class Main {
         ZonedDateTime now = ZonedDateTime.now();
         Duration duration = Duration.ofMinutes(30);
         ZonedDateTime now2 = now.plusMinutes(60);
-
-        Task task1 = new Task("Поход к врачу", "до 15 февраля", duration, now);
-       manager.putTask(task1);
-
-
-        Task task2 = new Task("Купить подарок брату", "Скрин подарка в ВК", duration, now2);
-       manager.putTask(task2);
-
-        try{
-            Task task3 = new Task("Купить подарок брату", "Скрин подарка", duration, now);
-            manager.putTask(task3);
-        } catch (IllegalArgumentException e){
-            System.out.println(e.getMessage());
-        }
-
-        System.out.println(((InMemoryTaskManager)manager).getTreeSet());
+Task epic1=new Epic("Поход к врачу", "до 15 февраля");
+manager.putTask(epic1);
+        Task subtask1 = new SubTask("Поход к врачу", "до 15 февраля", 1/*, duration, now*/);
+        manager.putTask(subtask1);
+        System.out.println(epic1.getStartTime());
+        System.out.println(epic1.getEndTime());
+        System.out.println(epic1.getDuration());
+        Task subtask4 = new SubTask("Поход к врачу", "до 15 февраля", 1, duration, now);
+       manager.putTask(subtask4);
+        System.out.println(epic1.getStartTime());
+        System.out.println(epic1.getEndTime());
+        System.out.println(epic1.getDuration());
+        Task subtask3 = new SubTask("Купить подарок брату", "Скрин подарка в ВК", 1);
+        manager.putTask(subtask3);
+        System.out.println(epic1.getStartTime());
+        System.out.println(epic1.getEndTime());
+        System.out.println(epic1.getDuration());
+        Task subtask2 = new SubTask("Купить подарок брату", "Скрин подарка в ВК", 1, duration, now2);
+       manager.putTask(subtask2);
+        System.out.println(epic1.getStartTime());
+        System.out.println(epic1.getEndTime());
+        System.out.println(epic1.getDuration());
+//        try{
+//            Task task3 = new Task("Купить подарок брату", "Скрин подарка", duration, now);
+//            manager.putTask(task3);
+//        } catch (IllegalArgumentException e){
+//            System.out.println(e.getMessage());
+//        }
+//
+//        System.out.println(((InMemoryTaskManager)manager).getTreeSet());
 //
 //        manager.deleteTaskById(1);
 //        System.out.println(((InMemoryTaskManager)manager).getTreeSet());

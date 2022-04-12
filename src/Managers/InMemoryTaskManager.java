@@ -149,34 +149,38 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void updateTask(Task task, Integer id) { //метод обновляет задачи всех видов
-        if (task instanceof SubTask) {
-            if (task.getId() == id) {
-                taskTreeSet.remove(getTaskByID(id));
-                subtasks.put(id, (SubTask) task);
-                epics.get(((SubTask) task).getEpic()).checkStatus();
-                taskTreeSet.add(task);
-            } else {
-                System.out.println("Вы пытаетесь записать подзадачу под другим id");
-            }
-        } else if (task instanceof Epic) {
+        if (task instanceof Epic) {
             if (task.getId() == id) {
                 epics.put(id, (Epic) task);
             } else {
                 System.out.println("Вы пытаетесь записать эпик под другим id");
             }
-        } else {
-            if (tasks.get(id) != null) {
+        } else if (canSaveTask(task)) { //добавлена проверка на пересечение для задач и подзадач
+            if (task instanceof SubTask) {
                 if (task.getId() == id) {
                     taskTreeSet.remove(getTaskByID(id));
-                    tasks.put(id, task);
+                    subtasks.put(id, (SubTask) task);
+                    epics.get(((SubTask) task).getEpic()).checkStatus();
                     taskTreeSet.add(task);
                 } else {
-                    System.out.println("Вы пытаетесь записать задачу под другим id");
+                    System.out.println("Вы пытаетесь записать подзадачу под другим id");
                 }
             } else {
-                System.out.println("Такой задачи нет в списках");
+                if (tasks.get(id) != null) {
+                    if (task.getId() == id) {
+                        taskTreeSet.remove(getTaskByID(id));
+                        tasks.put(id, task);
+                        taskTreeSet.add(task);
+                    } else {
+                        System.out.println("Вы пытаетесь записать задачу под другим id");
+                    }
+                } else {
+                    System.out.println("Такой задачи нет в списках");
+                }
             }
-        }
+        }else{
+                throw new IllegalArgumentException("Задача не может быть добавлена, на это время запланирована другая задача");
+            }
     }
 
     @Override

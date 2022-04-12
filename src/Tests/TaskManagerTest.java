@@ -2,10 +2,8 @@ package Tests;
 
 import Managers.Managers;
 import Managers.TaskManager;
-import Tasks.Epic;
-import Tasks.Status;
-import Tasks.SubTask;
-import Tasks.Task;
+import Tasks.*;
+import Enams.Status;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -56,6 +54,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
     void shouldBeCorrectlyPutTask() {
         Task task1 = new Task("Купить подарок брату", "Скрин подарка в ВК");
         manager.putTask(task1);
+        System.out.println(task1.getEndTime());
         assertFalse(manager.getListOfTasks().isEmpty());
         assertEquals(1, manager.getListOfTasks().size());
 

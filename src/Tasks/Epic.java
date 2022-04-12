@@ -1,5 +1,8 @@
 package Tasks;
 
+import Enams.Status;
+import Enams.TypeOfTasks;
+
 import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -13,29 +16,64 @@ public class Epic extends Task {
         subTasksOfEpic = new ArrayList<>();
     }
 
-    @Override
-    public Duration getDuration() {
+    public void addSubTask(SubTask subtask) { //метод записи сабтасков в лист эпика
+        subTasksOfEpic.add(subtask);
+        checkTime();
+    }
+
+    @Override //переопределила методы времени для эпика
+    public ZonedDateTime getEndTime() {
         if (!getSubTasksOfEpic().isEmpty()) {
-            ZonedDateTime minStartTime = subTasksOfEpic.get(0).getStartTime();
             ZonedDateTime maxEndTime = subTasksOfEpic.get(0).getEndTime();
             for (SubTask subtask : subTasksOfEpic) {
-                if (minStartTime.isAfter(subtask.getStartTime())) {
-                    minStartTime = subtask.getStartTime();
+                if (maxEndTime != null) {
+                    if(subtask.getEndTime()!= null) {
+                        if (maxEndTime.isBefore(subtask.getEndTime())) {
+                            maxEndTime = subtask.getEndTime();
+                        }
+                    }
                 }
-                if (maxEndTime.isBefore(subtask.getEndTime())) {
+                if (maxEndTime == null && subtask.getEndTime()!= null){
                     maxEndTime = subtask.getEndTime();
                 }
             }
-            setStartTime(minStartTime);
-            setEndTime(maxEndTime);
-            setDuration(Duration.between(minStartTime, maxEndTime));
-            return Duration.between(minStartTime, maxEndTime);
+            endTime = maxEndTime;
+        } else{
+            endTime=null;
+        }
+        return endTime;
+    }
+
+    @Override
+    public Duration getDuration() {
+        if (getStartTime() != null && getEndTime() != null) {
+            setDuration(Duration.between(getStartTime(), getEndTime()));
+            return Duration.between(getStartTime(), getEndTime());
         }
         return Duration.ZERO;
     }
 
-    public void addSubTask(SubTask subtask) { //метод записи сабтасков в лист эпика
-        subTasksOfEpic.add(subtask);
+    @Override
+    public ZonedDateTime getStartTime() {
+        if (!getSubTasksOfEpic().isEmpty()) {
+            ZonedDateTime minStartTime = subTasksOfEpic.get(0).getStartTime();
+            for (SubTask subtask : subTasksOfEpic) {
+                if (minStartTime != null) {
+                    if(subtask.getStartTime()!= null) {
+                        if (minStartTime.isAfter(subtask.getStartTime())) {
+                            minStartTime = subtask.getStartTime();
+                        }
+                    }
+                }
+                if(minStartTime==null && subtask.getStartTime()!= null){
+                    minStartTime = subtask.getStartTime();
+                }
+            }
+            startTime = minStartTime;
+        }else{
+            startTime=null;
+        }
+        return startTime;
     }
 
     public ArrayList<SubTask> getSubTasksOfEpic() { //метод возвращает список подзадач определенного эпика
@@ -70,6 +108,13 @@ public class Epic extends Task {
         }
     }
 
+    public void checkTime() {
+        getStartTime();
+        getEndTime();
+        getDuration();
+    }
+
+
     @Override // переопределение метода setStatus(Tasks.Status status) для эпиков
     public void setStatus(Status status) {
         System.out.println("Данный метод недоступен для задач этого класса Tasks.Epic");
@@ -77,7 +122,7 @@ public class Epic extends Task {
 
     @Override //переопределение toString()
     public String toString() {
-        return getId() + "," + TypeOfTasks.EPIC + "," + getName() + "," + getStatus() + "," + getDescription() + "," + getStartTime() + "," + super.getDuration();
+        return getId() + "," + TypeOfTasks.EPIC + "," + getName() + "," + getStatus() + "," + super.getDescription() + "," + super.getStartTime() + "," + super.getDuration();
     }
 
     @Override
