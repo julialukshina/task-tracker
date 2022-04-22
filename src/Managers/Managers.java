@@ -16,4 +16,8 @@ public class Managers { //утилитарный класс
     public static FileBackedTasksManager getDefaultFileBacked() {
         return new FileBackedTasksManager(file);
     }
+
+    public static FileBackedTasksManager getDefaultHttpTask() {
+        return new HttpTaskManager("http://localhost:8078");
+    }
 }

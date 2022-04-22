@@ -8,8 +8,11 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Objects;
 
+
 public class Epic extends Task {
-    private ArrayList<SubTask> subTasksOfEpic;
+    private final ArrayList<SubTask> subTasksOfEpic;
+
+
 
     public Epic(String name, String description) {
         super(name, description);
@@ -20,6 +23,7 @@ public class Epic extends Task {
         subTasksOfEpic.add(subtask);
         checkTime();
     }
+
 
     @Override //переопределила методы времени для эпика
     public ZonedDateTime getEndTime() {

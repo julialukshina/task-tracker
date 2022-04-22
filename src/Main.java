@@ -1,40 +1,72 @@
+import Enams.TypeOfTasks;
 import Managers.Managers;
 import Managers.*;
 import Tasks.*;
+import com.google.gson.ExclusionStrategy;
+import com.google.gson.FieldAttributes;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.time.ZonedDateTime;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
+        Gson gson = new GsonBuilder()
+                .setExclusionStrategies(new ExclusionStrategy() {
+                    @Override
+                    public boolean shouldSkipField(FieldAttributes f) {
+                        if(f.getName().equals("TYPE")){
+                            return true;
+                        }
+                        return false;
+                    }
 
+                    @Override
+                    public boolean shouldSkipClass(Class<?> clazz) {
+                        return false;
+                    }
+                }).create();
+Task task = new Task("name", "description");
+        System.out.println(gson.toJson(task));
         TaskManager manager = Managers.GetDefault();
-        ZonedDateTime now = ZonedDateTime.now();
-        Duration duration = Duration.ofMinutes(30);
-        ZonedDateTime now2 = now.plusMinutes(60);
-Task epic1=new Epic("Поход к врачу", "до 15 февраля");
-manager.putTask(epic1);
-        Task subtask1 = new SubTask("Поход к врачу", "до 15 февраля", 1/*, duration, now*/);
+//        ZonedDateTime now = ZonedDateTime.now();
+//        Duration duration = Duration.ofMinutes(30);
+//        ZonedDateTime now2 = now.plusMinutes(60);
+Epic epic1=new Epic("Поход к врачу", "до 15 февраля");
+        System.out.println(gson.toJson(epic1));
+        manager.putTask(epic1);
+        System.out.println(gson.toJson(epic1));
+       Task subtask1 = new SubTask("Поход к врачу", "до 15 февраля", 1);
+        System.out.println(gson.toJson(subtask1));
         manager.putTask(subtask1);
-        System.out.println(epic1.getStartTime());
-        System.out.println(epic1.getEndTime());
-        System.out.println(epic1.getDuration());
-        Task subtask4 = new SubTask("Поход к врачу", "до 15 февраля", 1, duration, now);
-       manager.putTask(subtask4);
-        System.out.println(epic1.getStartTime());
-        System.out.println(epic1.getEndTime());
-        System.out.println(epic1.getDuration());
-        Task subtask3 = new SubTask("Купить подарок брату", "Скрин подарка в ВК", 1);
-        manager.putTask(subtask3);
-        System.out.println(epic1.getStartTime());
-        System.out.println(epic1.getEndTime());
-        System.out.println(epic1.getDuration());
-        Task subtask2 = new SubTask("Купить подарок брату", "Скрин подарка в ВК", 1, duration, now2);
-       manager.putTask(subtask2);
-        System.out.println(epic1.getStartTime());
-        System.out.println(epic1.getEndTime());
-        System.out.println(epic1.getDuration());
-        System.out.println(epic1);
+        System.out.println(gson.toJson(subtask1));
+        System.out.println(gson.toJson(epic1));
+        System.out.println(gson.toJson(epic1.getSubTasksOfEpic()));
+        HttpTaskServer server = new HttpTaskServer();
+        server.startServer();
+
+//        manager.putTask(subtask1);
+//        System.out.println(epic1.getStartTime());
+//        System.out.println(epic1.getEndTime());
+//        System.out.println(epic1.getDuration());
+//        Task subtask4 = new SubTask("Поход к врачу", "до 15 февраля", 1, duration, now);
+//       manager.putTask(subtask4);
+//        System.out.println(epic1.getStartTime());
+//        System.out.println(epic1.getEndTime());
+//        System.out.println(epic1.getDuration());
+//       Task subtask3 = new SubTask("Купить подарок брату", "Скрин подарка в ВК", 1);
+//        manager.putTask(subtask3);
+//        System.out.println(epic1.getStartTime());
+//        System.out.println(epic1.getEndTime());
+//        System.out.println(epic1.getDuration());
+//        Task subtask2 = new SubTask("Купить подарок брату", "Скрин подарка в ВК", 1, duration, now2);
+//       manager.putTask(subtask2);
+//        System.out.println(epic1.getStartTime());
+//        System.out.println(epic1.getEndTime());
+//        System.out.println(epic1.getDuration());
+//        System.out.println(epic1);
 //        try{
 //            Task task3 = new Task("Купить подарок брату", "Скрин подарка", duration, now);
 //            manager.putTask(task3);

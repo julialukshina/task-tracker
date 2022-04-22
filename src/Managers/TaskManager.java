@@ -2,6 +2,7 @@ package Managers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeSet;
 
 import Tasks.*;
 
@@ -34,5 +35,6 @@ public interface TaskManager {
     void deleteTaskById(Integer id);
 
     boolean canSaveTask(Task task);
+    TreeSet getTreeSet();
 }
 
