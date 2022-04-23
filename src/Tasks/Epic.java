@@ -4,6 +4,7 @@ import Enams.Status;
 import Enams.TypeOfTasks;
 
 import java.time.Duration;
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -26,9 +27,9 @@ public class Epic extends Task {
 
 
     @Override //переопределила методы времени для эпика
-    public ZonedDateTime getEndTime() {
+    public LocalDateTime getEndTime() {
         if (!getSubTasksOfEpic().isEmpty()) {
-            ZonedDateTime maxEndTime = subTasksOfEpic.get(0).getEndTime();
+            LocalDateTime maxEndTime = subTasksOfEpic.get(0).getEndTime();
             for (SubTask subtask : subTasksOfEpic) {
                 if (maxEndTime != null) {
                     if(subtask.getEndTime()!= null) {
@@ -58,9 +59,9 @@ public class Epic extends Task {
     }
 
     @Override
-    public ZonedDateTime getStartTime() {
+    public LocalDateTime getStartTime() {
         if (!getSubTasksOfEpic().isEmpty()) {
-            ZonedDateTime minStartTime = subTasksOfEpic.get(0).getStartTime();
+            LocalDateTime minStartTime = subTasksOfEpic.get(0).getStartTime();
             for (SubTask subtask : subTasksOfEpic) {
                 if (minStartTime != null) {
                     if(subtask.getStartTime()!= null) {

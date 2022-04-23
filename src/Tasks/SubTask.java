@@ -3,6 +3,7 @@ package Tasks;
 import Enams.TypeOfTasks;
 
 import java.time.Duration;
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 
@@ -14,7 +15,7 @@ public class SubTask extends Task { // класс подзадач наслед�
         this.epic = epic;
     }
 
-    public SubTask(String name, String description, int epic, Duration duration, ZonedDateTime startTime) {
+    public SubTask(String name, String description, int epic, Duration duration, LocalDateTime startTime) {
         super(name, description, duration, startTime);
         this.epic = epic;
     }

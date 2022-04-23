@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.*;
 import java.time.Duration;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -87,7 +87,7 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
         managerWithHistory.getTaskByID(1);
         managerWithHistory.getTaskByID(5);
         managerWithHistory.deleteTaskById(1);
-        ZonedDateTime now = ZonedDateTime.parse("2022-04-10T17:50+03:00[Europe/Moscow]");
+        LocalDateTime now = LocalDateTime.parse("2022-04-10T17:50");
         Duration duration = Duration.ofMinutes(30);
         Task taskz = new Task("Купить подарок брату", "Скрин подарка в ВК");
         managerWithHistory.putTask(taskz);

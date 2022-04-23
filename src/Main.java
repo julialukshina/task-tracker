@@ -1,7 +1,9 @@
-import Enams.TypeOfTasks;
 import Managers.Managers;
-import Managers.*;
-import Tasks.*;
+import Managers.TaskManager;
+import Servers.HttpTaskServer;
+import Tasks.Epic;
+import Tasks.SubTask;
+import Tasks.Task;
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
@@ -9,7 +11,7 @@ import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
 import java.time.Duration;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -28,21 +30,33 @@ public class Main {
                         return false;
                     }
                 }).create();
-Task task = new Task("name", "description");
-        System.out.println(gson.toJson(task));
+
+        LocalDateTime now = LocalDateTime.MIN;
+        Duration duration = Duration.ofMinutes(30);
         TaskManager manager = Managers.GetDefault();
 //        ZonedDateTime now = ZonedDateTime.now();
 //        Duration duration = Duration.ofMinutes(30);
 //        ZonedDateTime now2 = now.plusMinutes(60);
-Epic epic1=new Epic("Поход к врачу", "до 15 февраля");
+//Epic epic1=new Epic("Поход к врачу", "до 15 февраля");
+        Task task = new Task("name", "description", duration, now);
+        manager.putTask(task);
+        System.out.println(gson.toJson(task));
+
+        Epic epic1=new Epic("Поход к врачу", "до 15 февраля");
+        Task subtask1 = new SubTask("Поход к врачу", "до 15 февраля", 2);
         System.out.println(gson.toJson(epic1));
         manager.putTask(epic1);
         System.out.println(gson.toJson(epic1));
-       Task subtask1 = new SubTask("Поход к врачу", "до 15 февраля", 1);
+//       Task subtask1 = new SubTask("Поход к врачу", "до 15 февраля", 1);
         System.out.println(gson.toJson(subtask1));
         manager.putTask(subtask1);
         System.out.println(gson.toJson(subtask1));
         System.out.println(gson.toJson(epic1));
+        System.out.println(gson.toJson(manager.getTreeSet()));
+        manager.getTaskByID(1);
+        manager.getTaskByID(2);
+        manager.getTaskByID(3);
+        System.out.println(gson.toJson(manager.history()));
         System.out.println(gson.toJson(epic1.getSubTasksOfEpic()));
         HttpTaskServer server = new HttpTaskServer();
         server.startServer();

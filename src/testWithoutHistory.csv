@@ -1,9 +1,11 @@
 id,type,name,status,description,startTime,duration,epic
 2,TASK,Купить подарок брату,NEW,Скрин подарка в ВК,null,null
 8,TASK,Купить подарок брату,NEW,Скрин подарка в ВК,null,null
-9,TASK,Поход к врачу,NEW,до 15 февраля,2022-04-10T17:50+03:00[Europe/Moscow],PT30M
+9,TASK,Поход к врачу,NEW,до 15 февраля,2022-04-10T17:50,PT30M
 3,EPIC,Ремонт,NEW,квартира в центре,null,null
 7,EPIC,Поход к врачу,NEW,до 15 февраля,null,null
 4,SUBTASK,Дизайнер,NEW,Не позднее марта,null,null,3
 5,SUBTASK,Бригада,NEW,Не позднее апреля,null,null,3
 6,SUBTASK,Согласование проекта,NEW,Не позднее конца марта,null,null,3
+
+3,6,7,2,4,5,

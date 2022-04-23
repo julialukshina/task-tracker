@@ -1,12 +1,15 @@
 package Managers;
 
-import Enams.*;
+import Enams.Status;
+import Enams.TypeOfTasks;
 import Exсeptions.ManagerSaveException;
-import Tasks.*;
+import Tasks.Epic;
+import Tasks.SubTask;
+import Tasks.Task;
 
 import java.io.*;
 import java.time.Duration;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +30,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager { // созда�
             if (taskElements[5].equals("null")) {
                 task.setStartTime(null);
             } else {
-                task.setStartTime(ZonedDateTime.parse(taskElements[5]));
+                task.setStartTime(LocalDateTime.parse(taskElements[5]));
             }
             if (taskElements[6].equals("null")) {
                 task.setDuration(null);
@@ -47,7 +50,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager { // созда�
             if (taskElements[5].equals("null")) {
                 subtask.setStartTime(null);
             } else {
-                subtask.setStartTime(ZonedDateTime.parse(taskElements[5]));
+                subtask.setStartTime(LocalDateTime.parse(taskElements[5]));
             }
             if (taskElements[6].equals("null")) {
                 subtask.setDuration(null);

@@ -23,7 +23,7 @@ public class HttpTaskServer { // класс HttpTask-сервера
         httpServer.createContext("/tasks", new TaskHandler());
     }
 
-    public static FileBackedTasksManager fileBackedTasksManager = Managers.getDefaultFileBacked();
+    public static TaskManager manager = Managers.getDefaultHttpTask();
     public static Gson gson = new GsonBuilder()
                 .setExclusionStrategies(new ExclusionStrategy() {
         @Override
@@ -49,7 +49,7 @@ public class HttpTaskServer { // класс HttpTask-сервера
         httpServer.start();
     } //метод для запуска HttpTask-сервера
 
-    void stopServer(){
+    public void stopServer(){
         httpServer.stop(5);
     } //метод для остановки HttpTask-сервера
 
@@ -70,20 +70,20 @@ public class HttpTaskServer { // класс HttpTask-сервера
                 case "GET":
                     if (taskId == -1) { //возвращаем
                         if (pathElements.length == 2) {
-                            response = gson.toJson(fileBackedTasksManager.getTreeSet()); //возвращаем список приоритезированных задач
+                            response = gson.toJson(manager.getTreeSet()); //возвращаем список приоритезированных задач
                         } else {
                             switch (pathElements[2]) {
                                 case "history": //возвращаем историю
-                                    response = gson.toJson(fileBackedTasksManager.history());
+                                    response = gson.toJson(manager.history());
                                     break;
                                 case "task": //возвращаем все таски
-                                    response = gson.toJson(fileBackedTasksManager.getListOfTasks());
+                                    response = gson.toJson(manager.getListOfTasks());
                                     break;
                                 case "subtask": //возвращаем все сабтаски
-                                    response = gson.toJson(fileBackedTasksManager.getListOfSubTasks());
+                                    response = gson.toJson(manager.getListOfSubTasks());
                                     break;
                                 case "epic": //возвращаем все эпики
-                                    response = gson.toJson(fileBackedTasksManager.getListOfEpics());
+                                    response = gson.toJson(manager.getListOfEpics());
                                     break;
                                 default:
                                     exchange.sendResponseHeaders(400, 0);
@@ -93,10 +93,10 @@ public class HttpTaskServer { // класс HttpTask-сервера
                     } else {
                         if (pathElements.length == 4 && pathElements[2].equals("subtask") && pathElements[3].equals("epic")) {
                             //возвращаем сабтаски по id эпика
-                            response = gson.toJson(fileBackedTasksManager.getListOfSubtasksOfEpics(taskId));
+                            response = gson.toJson(manager.getListOfSubtasksOfEpics(taskId));
                         } else if (pathElements.length == 3 && pathElements[1].equals("tasks")) {
                             //возвращаем задачу по id
-                            response = gson.toJson(fileBackedTasksManager.getTaskByID(taskId));
+                            response = gson.toJson(manager.getTaskByID(taskId));
                         } else {
                             exchange.sendResponseHeaders(400, 0);
                         }
@@ -106,16 +106,17 @@ public class HttpTaskServer { // класс HttpTask-сервера
                 case "POST":
                     if (pathElements.length == 2) {
                         exchange.sendResponseHeaders(400, 0);
+                        break;
                     } else {
                         InputStream inputStream = exchange.getRequestBody();
                         String body = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
                         if (taskId == -1) {
                             //записываем новую задачу
-                            fileBackedTasksManager.putTask(taskDeserialization(body));
+                            manager.putTask(taskDeserialization(body));
                         } else {
                             if (taskId == taskDeserialization(body).getId()) {
                                 //обновляем имеющуюся задачу
-                                fileBackedTasksManager.updateTask(taskDeserialization(body), taskId);
+                                manager.updateTask(taskDeserialization(body), taskId);
                             } else {
                                 throw new IllegalArgumentException("Id в параметре и теле запроса не совпадают");
                             }
@@ -126,17 +127,18 @@ public class HttpTaskServer { // класс HttpTask-сервера
                 case "DELETE":
                     if (pathElements.length == 2) {
                         exchange.sendResponseHeaders(400, 0);
+                        break;
                     } else {
                         if (taskId == -1) {
                             switch (pathElements[2]) {
                                 case "task": //удаляем все таски
-                                    fileBackedTasksManager.deleteAllTasks();
+                                    manager.deleteAllTasks();
                                     break;
                                 case "subtask": //удаляем все сабтаски
-                                    fileBackedTasksManager.deleteAllSubtasks();
+                                    manager.deleteAllSubtasks();
                                     break;
                                 case "epic": //удаляем все эпики
-                                    fileBackedTasksManager.deleteAllEpics();
+                                    manager.deleteAllEpics();
                                     break;
                                 default:
                                     exchange.sendResponseHeaders(400, 0);
@@ -144,7 +146,7 @@ public class HttpTaskServer { // класс HttpTask-сервера
                             }
                         } else {
                             //удаляем задачу по id
-                                fileBackedTasksManager.deleteTaskById(taskId);
+                                manager.deleteTaskById(taskId);
                         }
                     }
                     exchange.sendResponseHeaders(200, 0);

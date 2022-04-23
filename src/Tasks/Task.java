@@ -3,7 +3,7 @@ package Tasks;
 import Enams.*;
 
 import java.time.Duration;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Task { //класс задач
@@ -12,8 +12,8 @@ public class Task { //класс задач
     private Status status;
     private Integer id;
     protected   Duration duration;
-    protected ZonedDateTime startTime;
-    protected ZonedDateTime endTime;
+    protected LocalDateTime startTime;
+    protected LocalDateTime endTime;
 
     public Task(String name, String description) { //конструктор класса задач
         this.name = name;
@@ -22,7 +22,7 @@ public class Task { //класс задач
         id = 0;
     }
 
-    public Task(String name, String description, Duration duration, ZonedDateTime startTime) {
+    public Task(String name, String description, Duration duration, LocalDateTime startTime) {
         this.name = name;
         this.description = description;
         this.duration = duration;
@@ -32,7 +32,7 @@ public class Task { //класс задач
         endTime = getEndTime();
     }
 
-    public ZonedDateTime getEndTime() {
+    public LocalDateTime getEndTime() {
         if (startTime != null && duration != null) {
             endTime =  startTime.plusMinutes(duration.toMinutes());
         }else {
@@ -49,15 +49,15 @@ public class Task { //класс задач
         this.duration = duration;
     }
 
-    public ZonedDateTime getStartTime() {
+    public LocalDateTime getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(ZonedDateTime startTime) {
+    public void setStartTime(LocalDateTime startTime) {
         this.startTime = startTime;
     }
 
-    public void setEndTime(ZonedDateTime endTime) {
+    public void setEndTime(LocalDateTime endTime) {
         this.endTime = endTime;
     }
 

@@ -1,13 +1,15 @@
 package Tests;
 
+import Enams.Status;
 import Managers.Managers;
 import Managers.TaskManager;
-import Tasks.*;
-import Enams.Status;
+import Tasks.Epic;
+import Tasks.SubTask;
+import Tasks.Task;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -226,9 +228,9 @@ abstract class TaskManagerTest<T extends TaskManager> {
         manager.putTask(task1);
 
         TaskManager manager = Managers.GetDefault();
-        ZonedDateTime now = ZonedDateTime.now();
+        LocalDateTime now = LocalDateTime.now();
         Duration duration = Duration.ofMinutes(30);
-        ZonedDateTime now2 = now.plusMinutes(60);
+        LocalDateTime now2 = now.plusMinutes(60);
 
         Task task2 = new Task("Поход к врачу", "до 15 февраля", duration, now);
         assertTrue(manager.canSaveTask(task2));
