@@ -1,10 +1,9 @@
 package Tasks;
 
-import Enams.TypeOfTasks;
+import Enums.TypeOfTasks;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 import java.util.Objects;
 
 public class SubTask extends Task { // класс подзадач наследует класс задач

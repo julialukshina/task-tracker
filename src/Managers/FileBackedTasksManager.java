@@ -1,7 +1,7 @@
 package Managers;
 
-import Enams.Status;
-import Enams.TypeOfTasks;
+import Enums.Status;
+import Enums.TypeOfTasks;
 import Exсeptions.ManagerSaveException;
 import Tasks.Epic;
 import Tasks.SubTask;

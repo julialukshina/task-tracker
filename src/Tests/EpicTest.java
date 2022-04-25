@@ -3,7 +3,7 @@ package Tests;
 import Managers.Managers;
 import Managers.TaskManager;
 import Tasks.*;
-import Enams.Status;
+import Enums.Status;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

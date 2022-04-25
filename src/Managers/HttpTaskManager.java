@@ -47,11 +47,11 @@ public class HttpTaskManager extends FileBackedTasksManager{
             for(Task task : allTasks){
                 idToString.append(task.getId());
                 idToString.append(",");
-try {
-    client.put(String.valueOf(task.getId()), gson.toJson(task));
-} catch (IOException | InterruptedException e) {
-    e.printStackTrace();
-}
+                try {
+                    client.put(String.valueOf(task.getId()), gson.toJson(task));
+                } catch (IOException | InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
             try {
                 client.put(KEYS, gson.toJson(idToString.toString()));

@@ -1,6 +1,6 @@
 package Tests;
 
-import Enams.Status;
+import Enums.Status;
 import Managers.Managers;
 import Managers.TaskManager;
 import Tasks.Epic;

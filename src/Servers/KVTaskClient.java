@@ -27,36 +27,36 @@ public class KVTaskClient {
         HttpResponse.BodyHandler<String> handler = HttpResponse.BodyHandlers.ofString();
         HttpResponse<String> response = null;
         try {
-          response = client.send(request, handler);
+            response = client.send(request, handler);
         } catch (IOException | InterruptedException e) {
             System.out.println("Регистрация не пройдена. Повторите попытку");
         }
 
-        API_KEY=response.body();
+        API_KEY = response.body();
     }
 
-public void put(String key, String json) throws IOException, InterruptedException {
-        URI uri = URI.create(URL+ "/save/" +key + "?API_KEY="+ API_KEY);
-    HttpRequest request = HttpRequest.newBuilder()
-            .POST(HttpRequest.BodyPublishers.ofString(json))
-            .uri(uri)
-            .version(HttpClient.Version.HTTP_1_1)
-            .build();
-    HttpResponse.BodyHandler<String> handler = HttpResponse.BodyHandlers.ofString();
-    HttpResponse<String> response = client.send(request, handler);
-    if(response.statusCode()==400){
-        throw new IllegalArgumentException("Ключ или значение не введены");
+    public void put(String key, String json) throws IOException, InterruptedException {
+        URI uri = URI.create(URL + "/save/" + key + "?API_KEY=" + API_KEY);
+        HttpRequest request = HttpRequest.newBuilder()
+                .POST(HttpRequest.BodyPublishers.ofString(json))
+                .uri(uri)
+                .version(HttpClient.Version.HTTP_1_1)
+                .build();
+        HttpResponse.BodyHandler<String> handler = HttpResponse.BodyHandlers.ofString();
+        HttpResponse<String> response = client.send(request, handler);
+        if (response.statusCode() == 400) {
+            throw new IllegalArgumentException("Ключ или значение не введены");
+        }
+        if (response.statusCode() == 403) {
+            throw new IllegalStateException("Регистрация не пройдена");
+        }
+        if (response.statusCode() == 405) {
+            throw new IllegalArgumentException("Направлен некорректный запрос");
+        }
     }
-    if(response.statusCode()==403){
-        throw new IllegalStateException("Регистрация не пройдена");
-    }
-    if(response.statusCode()==405){
-        throw new IllegalArgumentException("Направлен некорректный запрос");
-    }
-}
 
-    String load (String key) throws IOException, InterruptedException {
-        URI uri = URI.create(URL+ "/load/" +key + "?API_KEY="+ API_KEY);
+    String load(String key) throws IOException, InterruptedException {
+        URI uri = URI.create(URL + "/load/" + key + "?API_KEY=" + API_KEY);
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
                 .uri(uri)
@@ -65,7 +65,7 @@ public void put(String key, String json) throws IOException, InterruptedExceptio
         HttpResponse.BodyHandler<String> handler = HttpResponse.BodyHandlers.ofString();
         HttpResponse<String> response = client.send(request, handler);
 
-        if(response.statusCode()==400){
+        if (response.statusCode() == 400) {
             throw new IllegalArgumentException("Ключ не введен");
         }
         if(response.statusCode()==403){
@@ -77,7 +77,7 @@ public void put(String key, String json) throws IOException, InterruptedExceptio
         if(response.statusCode()==405){
             throw new IllegalArgumentException("Направлен некорректный запрос");
         }
-return response.body();
+        return response.body();
     }
 
 }
